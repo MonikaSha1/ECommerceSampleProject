@@ -19,15 +19,15 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public Product getSingleProduct(Long productId) {
+    public Product getSingleProduct(Long productId) throws RuntimeException{
         //ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity = restTemplate.getForEntity("http://localhost:8080/products/" + productId, FakeStoreProductDto.class);
         ResponseEntity<FakeStoreProductDto> fakeStoreProductDtoResponseEntity = restTemplate.getForEntity(
                 "https://fakestoreapi.com/products/" + productId,
                 FakeStoreProductDto.class);
         System.out.println("Response Body-->"+fakeStoreProductDtoResponseEntity.getBody());
         FakeStoreProductDto fakeStoreProductDto = fakeStoreProductDtoResponseEntity.getBody();
-
-        return fakeStoreProductToProduct(fakeStoreProductDto);
+throw new RuntimeException();
+        //return fakeStoreProductToProduct(fakeStoreProductDto);
     }
 
     private Product fakeStoreProductToProduct(FakeStoreProductDto fakeStoreProductDto) {

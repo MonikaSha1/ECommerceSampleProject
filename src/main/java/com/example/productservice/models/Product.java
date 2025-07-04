@@ -1,14 +1,24 @@
 package com.example.productservice.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
+@Entity(name = "Product")
 public class Product extends BaseModel {
     private String title;
     private long price;
-    private String category;
+
+    @ManyToOne
+    private Category category;
     private String description;
     private String image;
 
-    public String getTitle() {
+    /*public String getTitle() {
         return title;
     }
 
@@ -47,5 +57,5 @@ public class Product extends BaseModel {
     public void setImage(String image) {
         this.image = image;
     }
-
+*/
 }

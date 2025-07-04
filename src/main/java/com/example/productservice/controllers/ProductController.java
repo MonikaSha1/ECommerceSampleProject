@@ -2,6 +2,8 @@ package com.example.productservice.controllers;
 
 import com.example.productservice.models.Product;
 import com.example.productservice.services.ProductService;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -14,15 +16,24 @@ public class ProductController {
     public final RestTemplate restTemplate;
     private ProductService productService;
 
-    public ProductController(ProductService productService, RestTemplate restTemplate) {
+    public ProductController(@Qualifier("StorageProductService") ProductService productService, RestTemplate restTemplate) {
         this.productService = productService;
         this.restTemplate = restTemplate;
     }
 
     @GetMapping("/{id}")
-    public Product getSingleProduct(@PathVariable("id") Long id) {
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("id") Long id) {
         System.out.println("DEBUG POINT");
-       return productService.getSingleProduct(id);
+        ResponseEntity<Product> productResponseEntity = null ;
+        Product product = null;
+        try {
+            product = productService.getSingleProduct(id);
+            productResponseEntity = new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            productResponseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+       return productResponseEntity;//productService.getSingleProduct(id);
     }
     @GetMapping
     public List<Product> getAllProducts() {
